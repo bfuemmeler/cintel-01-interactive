@@ -1,7 +1,6 @@
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
-from shiny.express import input
 #
 # Data for the histogram
 
@@ -12,8 +11,8 @@ app_ui = ui.page_navbar(
     ui.nav_panel(
         "Histogram",
         ui.input_slider(
-            "selected_number_of_boxes",
-            "Number of Boxes",
+            "selected_number_of_bins",
+            "Number of Bins",
             min=0,
             max=100,
             value=20
@@ -29,13 +28,13 @@ def server(input,output, session):
     @render.plot(alt="Normalized histogram of the data")
     def histogram():
         """Reactive plot: redraws when the slider value changes."""
-        n_boxes = max(input.selected_number_of_boxes(), 1)
+        n_bins = max(input.selected_number_of_bins(), 1)
 
         plt.figure()
-        plt.hist(data, boxes=n_boxes, density=True)
+        plt.hist(data, bins=n_bins, density=True)
         plt.xlabel("Value")
         plt.ylabel("Density")
-        plt.title(f"Histogram with {n_boxes} boxes")
+        plt.title(f"Histogram with {n_bins} bins")
         plt.tight_layout()
 
 app = App(app_ui, server)
